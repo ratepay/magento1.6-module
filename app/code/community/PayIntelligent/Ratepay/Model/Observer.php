@@ -242,8 +242,8 @@ class PayIntelligent_Ratepay_Model_Observer
     {
         $client = Mage::getSingleton('ratepay/request');
         $helper = Mage::helper('ratepay/mapping');
-        $shipping = $observer->getEvent()->getShipment();
-        $order = $shipping->getOrder();
+        $invoice = $observer->getEvent()->getInvoice();
+        $order = $invoice->getOrder();
         if (Mage::helper('ratepay/payment')->isRatepayPayment($order->getPayment()->getMethod())) {
             $result = $client->callConfirmationDeliver($helper->getRequestHead($order), $helper->getRequestBasket($order), $helper->getLoggingInfo($order));
 
@@ -251,7 +251,7 @@ class PayIntelligent_Ratepay_Model_Observer
                 Mage::throwException(Mage::helper('ratepay')->__('Pi Delivery was not successful.'));
             }
 
-            Mage::helper('ratepay/payment')->addNewTransaction($order->getPayment(), Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $shipping, true, 'CONFIRMATION_DELIVER SEND (capture)');
+            Mage::helper('ratepay/payment')->addNewTransaction($order->getPayment(), Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE, $invoice, true, 'CONFIRMATION_DELIVER SEND (capture)');
             $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, 'payment_complete', 'success')->save();
         }
     }
