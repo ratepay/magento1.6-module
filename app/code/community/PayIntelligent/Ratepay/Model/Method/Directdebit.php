@@ -57,42 +57,13 @@ class PayIntelligent_Ratepay_Model_Method_Directdebit extends PayIntelligent_Rat
 
         // Bank data
         $ibanAccNo = $this->_clearIban($params[$this->_code . '_account_number']);
-        $ibanAccNoCountryCode = substr($ibanAccNo, 0, 2);
-        $bic = $params[$this->_code . '_bank_code_number'];
 
         if (!empty($ibanAccNo)) {
             if (!is_numeric($ibanAccNo)) {
-                if ($ibanAccNoCountryCode == $this->getHelper()->getCountryCode($quote)) {
-                    if ($ibanAccNoCountryCode == "DE") {
-                        if (strlen($ibanAccNo) <> 22) {
-                            Mage::throwException($this->_getHelper()->__('Pi IBAN invalid Error'));
-                        }
-                        unset($params[$this->_code . '_bic']);
-                    }
-                    if ($ibanAccNoCountryCode == "AT") {
-                        if (strlen($ibanAccNo) <> 20) {
-                            Mage::throwException($this->_getHelper()->__('Pi IBAN invalid Error'));
-                        }
-                        if ($bic == '') {
-                            Mage::throwException($this->_getHelper()->__('Pi insert bank code'));
-                        } elseif (strlen($bic) <> 8 && strlen($bic) <> 11) {
-                            Mage::throwException($this->_getHelper()->__('Pi insert bank code'));
-                        }
-                        $params[$this->_code . '_bic'] = $bic;
-                    }
-                } else {
-                    Mage::throwException($this->_getHelper()->__('Pi IBAN invalid Error'));
-                }
                 unset($params[$this->_code . '_account_number']);
                 unset($params[$this->_code . '_bank_code_number']);
 
                 $params[$this->_code . '_iban'] = $ibanAccNo;
-            } else {
-                if ($this->getHelper()->getCountryCode($quote) != "DE") {
-                    Mage::throwException($this->_getHelper()->__('Pi IBAN invalid Error'));
-                } elseif (!is_numeric($bic) || strlen($bic) <> 8) {
-                    Mage::throwException($this->_getHelper()->__('Pi insert bank code'));
-                }
             }
         }
 

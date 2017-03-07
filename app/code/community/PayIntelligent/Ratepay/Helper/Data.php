@@ -316,9 +316,6 @@ class PayIntelligent_Ratepay_Helper_Data extends Mage_Core_Helper_Abstract
             );
             if(!empty($data[$code . '_iban'])) {
                 $bankdata['iban'] = $data[$code . '_iban'];
-                if(!empty($data[$code . '_bic'])) {
-                    $bankdata['bic'] = $data[$code . '_bic'];
-                }
             } else {
                 $bankdata['accountnumber'] = $data[$code . '_account_number'];
                 $bankdata['bankcode'] = $data[$code . '_bank_code_number'];
@@ -368,9 +365,6 @@ class PayIntelligent_Ratepay_Helper_Data extends Mage_Core_Helper_Abstract
 
             if(Mage::getSingleton('core/session')->getIban()) {
                 $bankdata['iban'] = Mage::getSingleton('core/session')->getIban();
-                if(Mage::getSingleton('core/session')->getBic()) {
-                    $bankdata['bic'] = Mage::getSingleton('core/session')->getBic();
-                }
             } else {
                 $bankdata['accountnumber'] = Mage::getSingleton('core/session')->getAccountNumber();
                 $bankdata['bankcode'] = Mage::getSingleton('core/session')->getBankCodeNumber();
